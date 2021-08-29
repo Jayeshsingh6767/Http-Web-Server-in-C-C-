@@ -1,0 +1,51 @@
+#include<iostream>
+#include<map>
+using namespace std;
+namespace tmwp
+{
+class Request
+{
+private:
+map<string,int> intDataMap;
+int isRequestForwarded;
+public:
+char *forwardedRequest;
+
+map<string,string> dataMap;
+char *method;
+char *resource;
+char isClientSideTechnologyResource;
+char *mimeType;
+string get(string key);
+void forward(char *);
+char * getForwardedRequest();
+int tellIsRequestForwarded();
+void setInt(string,int);
+int getInt(string);
+};
+class Response
+{
+private:
+int clientSocketDescriptor;
+bool isClosed;
+bool headerCreated;
+void createHeader();
+public:
+Response(int clientSocketDescriptor);
+void write(char *response);
+void close();
+};
+class TMWebProjector
+{
+private:
+int portNumber;
+map<string,void (*)(Request &,Response &)> urls;
+//char *url;
+//void (*p)(Request,Response);
+public:
+TMWebProjector(int portNumber);
+void start();
+void onRequest(char *ptr,void (*p)(Request &,Response &));
+~TMWebProjector();
+};
+}
